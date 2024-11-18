@@ -29,27 +29,27 @@ Batikalongan menggunakan dukungan teknologi untuk memberikan **kemudahan** dan *
 
 ## 📦 **Daftar Modul**
 
-### **1. Catalog**
+### **1. Catalog** (Farrel)
 Modul ini menyimpan **informasi lengkap** mengenai toko-toko batik di Kabupaten Pekalongan dan produk-produk yang dijual. Fitur yang tersedia:
 - **Admin** dapat menambahkan, memperbarui, atau menghapus toko dan produk.
 - **Pengguna** dapat melihat daftar toko dan produk lengkap dengan detail seperti **nama**, **harga**, dan **deskripsi**.
 
-### **2. Event**
+### **2. Event** (Franky)
 Modul ini mencatat **informasi** mengenai acara-acara batik. Fitur yang tersedia:
 - **Admin** dapat menambahkan, memperbarui, atau menghapus informasi event, termasuk tanggal, lokasi, dan deskripsi acara.
 - **Pengguna** dapat melihat daftar event batik yang akan datang dan mengikuti acara sesuai minat mereka.
 
-### **3. Gallery**
+### **3. Gallery** (Faiz)
 Modul ini menampilkan **gambar batik** beserta deskripsi **motifnya**, termasuk informasi asal-usul dan **makna motif**. Fitur yang tersedia:
 - **Admin** dapat menambahkan dan memperbarui gambar serta deskripsi motif batik.
 - **Pengguna** dapat menjelajahi galeri motif batik yang tersedia.
 
-### **4. Article**
+### **4. Article** (Aileen)
 Modul ini berisi **artikel edukatif** seputar batik, mulai dari sejarah hingga teknik pembuatan batik. Fitur yang tersedia:
 - **Admin** dapat menambahkan, memperbarui, atau menghapus artikel.
 - **Pengguna** dapat membaca **artikel-artikel informatif** mengenai batik.
 
-### **5. Timeline**
+### **5. Timeline** (Sherwyn)
 Modul ini berfungsi sebagai ruang komunitas bagi pengguna untuk berbagi dan melihat update terkait batik. Fitur yang tersedia:
 - **Pengguna** dapat membuat posting tentang pengalaman, pertanyaan, atau informasi terbaru seputar batik.
 - **Pengguna** dapat melihat posting dari pengguna lain, termasuk komentar dan interaksi terkait.
@@ -65,9 +65,16 @@ Customer adalah individu yang ingin mencari **informasi produk batik** dan **tok
 - **Wisatawan** yang berkunjung ke Pekalongan untuk membeli batik.
 - **Penduduk lokal** yang tertarik dengan batik untuk keperluan pribadi atau sebagai oleh-oleh.
 
+### **Admin**
+Admin adalah pihak yang bertanggung jawab untuk **mengelola konten** di aplikasi Batikalongan, memastikan semua informasi yang tersedia selalu terbaru dan relevan. Tugas dan wewenang Admin meliputi:
+- **Menambahkan, memperbarui, dan menghapus** toko batik, produk, event, artikel, serta galeri motif.
+- **Mengelola keakuratan data** di seluruh modul aplikasi untuk memberikan pengalaman terbaik kepada pengguna.
+
 ---
 
 ## 🚀 **Tautan Deployment**
 Batikalongan dapat diakses melalui TBA.
 
 ---
+
+## 💻 **Alur Pengintegrasian dengan Web Service**
