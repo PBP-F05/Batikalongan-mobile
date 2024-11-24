@@ -78,3 +78,9 @@ Batikalongan dapat diakses melalui TBA.
 ---
 
 ## 💻 **Alur Pengintegrasian dengan Web Service**
+1. Menambahkan dependensi untuk melakukan HTTP request.
+2. Membuat model data sesuai struktur yang diperlukan.
+3. Mengambil data JSON dari sumber aplikasi web.
+4. Mengonversi data JSON yang diambil menjadi model menggunakan manual serialization dengan decoder bawaan JSON.
+5. Mengimplementasikan desain front-end berdasarkan tampilan aplikasi sebelumnya.
+6. Melakukan integrasi antara front-end dan back-end.
