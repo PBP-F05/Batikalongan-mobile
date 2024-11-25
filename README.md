@@ -85,3 +85,9 @@ Batikalongan dapat diakses melalui TBA.
 5. Mengimplementasikan desain front-end berdasarkan tampilan aplikasi sebelumnya.
 6. Melakukan integrasi antara front-end dan back-end.
 
+
+
+
+[Progres Kelompok](https://docs.google.com/spreadsheets/d/1i8iboQTR-GwzC8-gUDagbciR_mr96ZwDcID1vye8uFs/edit?usp=sharing)
+
+<iframe src="https://docs.google.com/spreadsheets/d/1i8iboQTR-GwzC8-gUDagbciR_mr96ZwDcID1vye8uFs/edit?usp=sharing/pubhtml?widget=true&amp;headers=false" width="100%" height="500"></iframe>
