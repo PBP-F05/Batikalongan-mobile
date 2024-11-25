@@ -84,3 +84,4 @@ Batikalongan dapat diakses melalui TBA.
 4. Mengonversi data JSON yang diambil menjadi model menggunakan manual serialization dengan decoder bawaan JSON.
 5. Mengimplementasikan desain front-end berdasarkan tampilan aplikasi sebelumnya.
 6. Melakukan integrasi antara front-end dan back-end.
+
