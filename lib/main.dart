@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:batikalongan_mobile/gallery/screens/gallery_screen.dart';
 
 class AppTheme {
   // Primary brand colors
@@ -74,20 +75,35 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
-
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Batikalongan',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.themeData,
-      home: const SplashScreen(),
+      title: 'Galeri Batik',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+      ),
+      home: const GalleryScreen(),
     );
   }
 }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Batikalongan',
+//       debugShowCheckedModeBanner: false,
+//       theme: AppTheme.themeData,
+//       home: const SplashScreen(),
+//     );
+//   }
+// }
 
 void main() {
   runApp(const MyApp());
