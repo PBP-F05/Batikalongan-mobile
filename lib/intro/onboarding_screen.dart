@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:batikalongan_mobile/article/artikel_screen.dart';  
+import 'package:batikalongan_mobile/gallery/screens/gallery_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -106,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ArtikelBatikScreen(),
+                                          builder: (context) => GalleryScreen(),
                                         ),
                                       );
                                     } else {
