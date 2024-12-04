@@ -52,6 +52,14 @@ class GalleryCard extends StatelessWidget {
               width: 120,
               height: 120,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 120,
+                  height: 120,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                );
+              },
             ),
           ),
           const SizedBox(width: 12),
@@ -64,7 +72,7 @@ class GalleryCard extends StatelessWidget {
                 // Nama Batik
                 Text(
                   namaBatik,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w500,
                     fontSize: 20,
@@ -77,7 +85,7 @@ class GalleryCard extends StatelessWidget {
                 // Deskripsi
                 Text(
                   deskripsi,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
@@ -96,7 +104,7 @@ class GalleryCard extends StatelessWidget {
                   ),
                   child: Text(
                     'Makna: $makna',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
@@ -114,7 +122,7 @@ class GalleryCard extends StatelessWidget {
                   ),
                   child: Text(
                     'Asal Usul: $asalUsul',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
