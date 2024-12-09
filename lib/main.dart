@@ -1,6 +1,7 @@
+import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
+import 'package:batikalongan_mobile/intro/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:batikalongan_mobile/auth/screens/login.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.deepPurple,
           ).copyWith(secondary: Colors.deepPurple[400]),
         ),
-        home: const LoginPage()
+        home: const ArtikelScreen()
       ),
     );
   }
