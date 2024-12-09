@@ -3,6 +3,8 @@ import '../widgets/gallery_card.dart';
 import '../widgets/pagination_controls.dart';
 import '../services/gallery_service.dart';
 import '../models/gallery_entry.dart';
+import 'edit_entry_screen.dart';
+import 'add_entry_screen.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
@@ -52,9 +54,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Galeri Batik',
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Fabled', // Menggunakan font custom
             color: Colors.black,
             fontSize: 40,
@@ -74,8 +76,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Logika untuk form tambah
-                        print('Tambah Batik');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddEntryScreen(
+                              onEntryAdded: _fetchEntries, // Refresh galeri
+                            ),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(color: Color(0xFFD88E30), width: 2),
@@ -85,9 +93,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Tambah Batik',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
@@ -111,12 +119,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           asalUsul: entry.asalUsul,
                           makna: entry.makna,
                           fotoUrl: 'https://faiz-assabil-batikalongantest.pbp.cs.ui.ac.id/media/${entry.fotoUrl}',
-                          isAdmin: true, // Untuk menampilkan tombol Edit & Delete
+                          isAdmin: true,
                           onEdit: () {
-                            print('Edit Batik ${entry.id}');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditEntryScreen(
+                                  entry: entry,
+                                  onEntryUpdated: _fetchEntries, // Refresh galeri
+                                ),
+                              ),
+                            );
                           },
                           onDelete: () {
-                            print('Delete Batik ${entry.id}');
+                            // Logika delete
                           },
                         );
                       },
