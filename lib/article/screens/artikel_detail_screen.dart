@@ -13,6 +13,7 @@ class ArtikelDetailScreen extends StatelessWidget {
     required this.konten,
     required this.imagePath, // Menerima path gambar
   }) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +40,10 @@ class ArtikelDetailScreen extends StatelessWidget {
                                 imagePath) // Untuk gambar dari URL (Web)
                             : File(imagePath).existsSync()
                                 ? FileImage(File(imagePath)) // Gambar lokal
-                                : const AssetImage("assets/placeholder.jpg")
+                                : const AssetImage("images/placeholder.jpg")
                                     as ImageProvider // Jika tidak ditemukan gambar
                         : const AssetImage(
-                            "assets/placeholder.jpg"), // Placeholder jika imagePath kosong
+                            "images/placeholder.jpg"), // Placeholder jika imagePath kosong
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(8),

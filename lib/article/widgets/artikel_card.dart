@@ -1,6 +1,9 @@
+import 'package:batikalongan_mobile/article/screens/artikel_detail_screen.dart';
+import 'package:batikalongan_mobile/article/screens/artikel_edit_screen.dart'; // Impor screen ArtikelEditScreen
 import 'package:flutter/material.dart';
 import 'dart:io'; // Untuk File dan Image.file
 import 'package:flutter/foundation.dart'; // Untuk kIsWeb
+import 'package:flutter_svg/flutter_svg.dart'; // Import flutter_svg
 
 class ArtikelCardWidget extends StatelessWidget {
   final String judul;
@@ -26,28 +29,69 @@ class ArtikelCardWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Gambar Header
-            Container(
-              width: double.infinity,
-              height: 111,
-              decoration: ShapeDecoration(
-                image: DecorationImage(
-                  image: imagePath.isNotEmpty
-                      ? kIsWeb
-                          ? NetworkImage(imagePath) // Gambar dari URL (Web)
-                          : FileImage(File(imagePath))
-                              as ImageProvider // Gambar lokal di perangkat
-                      : const AssetImage(
-                          "assets/placeholder.jpg"), // Gambar placeholder
-                  fit: BoxFit
-                      .cover, // Gunakan BoxFit.cover untuk menjaga rasio aspek gambar
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+            Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 111,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: imagePath.isNotEmpty
+                          ? kIsWeb
+                              ? NetworkImage(imagePath) // Gambar dari URL (Web)
+                              : FileImage(File(imagePath))
+                                  as ImageProvider // Gambar lokal di perangkat
+                          : const AssetImage(
+                              "images/placeholder.jpg"), // Gambar placeholder
+                      fit: BoxFit
+                          .cover, // Gunakan BoxFit.cover untuk menjaga rasio aspek gambar
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                // Tombol Edit dan Delete
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/images/edit.svg', // Path ke file edit.svg
+                        ),
+                        onPressed: () {
+                          // Navigasi ke ArtikelEditScreen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ArtikelEditScreen(
+                                initialJudul: judul,
+                                initialPendahuluan: pendahuluan,
+                                initialKonten:
+                                    pendahuluan, // Ganti jika ada konten penuh
+                                initialImagePath: imagePath,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/images/delete.svg', // Path ke file delete.svg
+                        ),
+                        onPressed: () {
+                          // Aksi untuk delete artikel
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             // Konten Utama (Judul, Pendahuluan, dan Tombol)
             Container(
@@ -100,6 +144,7 @@ class ArtikelCardWidget extends StatelessWidget {
                           builder: (context) => ArtikelDetailScreen(
                             judul: judul, // Mengirimkan judul artikel
                             konten: pendahuluan, // Mengirimkan konten artikel
+                            imagePath: imagePath,
                           ),
                         ),
                       );
@@ -137,52 +182,6 @@ class ArtikelCardWidget extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ArtikelDetailScreen extends StatelessWidget {
-  final String judul;
-  final String konten;
-
-  const ArtikelDetailScreen({
-    Key? key,
-    required this.judul,
-    required this.konten,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Artikel Detail'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                judul, // Judul artikel yang dikirim
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                konten, // Konten artikel yang dikirim
-                style: TextStyle(
-                  fontSize: 16,
-                  height: 1.5,
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
