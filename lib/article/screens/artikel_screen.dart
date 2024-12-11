@@ -81,10 +81,14 @@ class _ArtikelScreenState extends State<ArtikelScreen> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 final artikel = snapshot.data[index];
-                return ArtikelCardWidget(
-                  judul: artikel.fields.title,
-                  pendahuluan: artikel.fields.introduction,
-                  imagePath: artikel.fields.image,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Menambahkan jarak vertikal antar card
+                  child: ArtikelCardWidget(
+                    judul: artikel.fields.title,
+                    pendahuluan: artikel.fields.introduction,
+                    imagePath: artikel.fields.image,
+                  ),
                 );
               },
             );
