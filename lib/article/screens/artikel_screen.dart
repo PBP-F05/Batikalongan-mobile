@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart'; // Tambahkan ini untuk menggunakan Provider
+import 'package:provider/provider.dart';
 import 'artikel_form_screen.dart';
 import '../widgets/artikel_card.dart';
 import 'package:batikalongan_mobile/article/models/artikel_entry.dart';
@@ -12,27 +12,57 @@ class ArtikelScreen extends StatefulWidget {
   State<ArtikelScreen> createState() => _ArtikelScreenState();
 }
 
-class _ArtikelScreenState extends State<ArtikelScreen> {
+class _ArtikelScreenState extends State<ArtikelScreen>
+    with WidgetsBindingObserver {
+  late Future<List<Article>> artikelList;
+
+  @override
+  void initState() {
+    super.initState();
+    artikelList = fetchArtikel(context.read<CookieRequest>());
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        artikelList = fetchArtikel(context.read<CookieRequest>());
+      });
+    }
+  }
+
   Future<List<Article>> fetchArtikel(CookieRequest request) async {
-    // Ganti URL sesuai endpoint API Anda
     final response = await request.get('http://127.0.0.1:8000/article/json/');
 
-    // Decode response menjadi bentuk JSON
     var data = response;
 
-    // Konversi data JSON menjadi objek ArtikelEntry
-    List<Article> listArtikel = [];
-    for (var d in data) {
-      if (d != null) {
-        listArtikel.add(Article.fromJson(d));
+    if (data is Map<String, dynamic> && data.containsKey('articles')) {
+      List<Article> listArtikel = [];
+
+      var articles = data['articles'];
+      if (articles is List) {
+        for (var d in articles) {
+          if (d != null) {
+            listArtikel.add(Article.fromJson(d));
+          }
+        }
       }
+      return listArtikel;
+    } else {
+      throw Exception('Unexpected response format');
     }
-    return listArtikel;
   }
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Artikel Batik'),
@@ -43,14 +73,12 @@ class _ArtikelScreenState extends State<ArtikelScreen> {
               final newArtikel = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ArtikelFormScreen(),
+                  builder: (context) => const ArtikelFormScreen(),
                 ),
               );
               if (newArtikel != null) {
-                // Kirim data baru ke backend atau tambahkan langsung ke state
-                // Contoh sederhana menambahkan ke list lokal:
                 setState(() {
-                  // Tambahkan newArtikel ke dalam listArtikel (jika local state digunakan)
+                  artikelList = fetchArtikel(context.read<CookieRequest>());
                 });
               }
             },
@@ -58,7 +86,7 @@ class _ArtikelScreenState extends State<ArtikelScreen> {
         ],
       ),
       body: FutureBuilder(
-        future: fetchArtikel(request),
+        future: artikelList,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -82,12 +110,12 @@ class _ArtikelScreenState extends State<ArtikelScreen> {
               itemBuilder: (context, index) {
                 final artikel = snapshot.data[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Menambahkan jarak vertikal antar card
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: ArtikelCardWidget(
-                    judul: artikel.fields.title,
-                    pendahuluan: artikel.fields.introduction,
-                    imagePath: artikel.fields.image,
+                    id: artikel.id,
+                    judul: artikel.title,
+                    pendahuluan: artikel.introduction,
+                    image: artikel.image,
                   ),
                 );
               },

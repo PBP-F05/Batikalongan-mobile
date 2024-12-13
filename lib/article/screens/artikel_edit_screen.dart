@@ -1,18 +1,19 @@
 import 'package:batikalongan_mobile/article/widgets/edit_form.dart';
 import 'package:flutter/material.dart';
-
 class ArtikelEditScreen extends StatefulWidget {
+  final int id;
   final String initialJudul;
   final String initialPendahuluan;
   final String initialKonten;
-  final String initialImagePath;
+  final String initialImage;
 
   const ArtikelEditScreen({
     Key? key,
+    required this.id, 
     required this.initialJudul,
     required this.initialPendahuluan,
     required this.initialKonten,
-    required this.initialImagePath,
+    required this.initialImage,
   }) : super(key: key);
 
   @override
@@ -29,19 +30,11 @@ class _ArtikelEditScreenState extends State<ArtikelEditScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: EditForm(
+          id: widget.id, 
           initialJudul: widget.initialJudul,
           initialPendahuluan: widget.initialPendahuluan,
           initialKonten: widget.initialKonten,
-          initialImagePath: widget.initialImagePath,
-          onSubmit: (editedData) {
-            // Logika untuk menangani data yang sudah diedit
-            // Misalnya, bisa mengirim data ke API atau mengupdate state di sini
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Artikel berhasil diupdate!")),
-            );
-            Navigator.pop(
-                context); // Kembali ke layar sebelumnya setelah menyimpan
-          },
+          initialImage: widget.initialImage,
         ),
       ),
     );

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'dart:io'; // Untuk File dan Image.file
-import 'package:flutter/foundation.dart'; // Untuk kIsWeb
+import 'dart:convert';
+
 
 class ArtikelDetailScreen extends StatelessWidget {
   final String judul;
   final String konten;
-  final String imagePath;
+  final String image;
 
   const ArtikelDetailScreen({
-    Key? key,
+    super.key,
     required this.judul,
     required this.konten,
-    required this.imagePath, // Menerima path gambar
-  }) : super(key: key);
+    required this.image,
+  });
   
 
   @override
@@ -28,33 +28,23 @@ class ArtikelDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Menampilkan gambar di atas judul artikel
               Container(
                 width: double.infinity,
-                height: 200, // Tentukan tinggi gambar
+                height: 200,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: imagePath.isNotEmpty
-                        ? kIsWeb
-                            ? NetworkImage(
-                                imagePath) // Untuk gambar dari URL (Web)
-                            : File(imagePath).existsSync()
-                                ? FileImage(File(imagePath)) // Gambar lokal
-                                : const AssetImage("images/placeholder.jpg")
-                                    as ImageProvider // Jika tidak ditemukan gambar
-                        : const AssetImage(
-                            "images/placeholder.jpg"), // Placeholder jika imagePath kosong
+                    image: _getImageProvider(
+                          image),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
               const SizedBox(height: 28),
-              // Judul Artikel
               SizedBox(
                 width: double.infinity,
                 child: Text(
-                  judul, // Judul yang dikirim dari parameter
+                  judul,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFFD88E30),
@@ -73,7 +63,7 @@ class ArtikelDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      konten, // Konten artikel yang dikirim
+                      konten,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         color: Colors.black,
@@ -91,5 +81,18 @@ class ArtikelDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ImageProvider _getImageProvider(String image) {
+    if (image.isEmpty) {
+      return const AssetImage('images/placeholder.jpg');
+    } else {
+      try {
+        final bytes = base64Decode(image);
+        return MemoryImage(bytes);
+      } catch (e) {
+        return const AssetImage('images/placeholder.jpg');
+      }
+    }
   }
 }

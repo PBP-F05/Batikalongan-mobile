@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'dart:convert'; // Untuk JSON encoding/decoding
+import 'dart:convert';
 import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,15 +39,19 @@ class _ArtikelFormWidgetState extends State<ArtikelFormWidget> {
 void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Menyiapkan data yang akan dikirim
+        String base64Image = '';
+        if (_selectedImage != null) {
+          final imageBytes = await _selectedImage!.readAsBytes();
+          base64Image = base64Encode(imageBytes);
+        }
+
         final submittedData = {
           'title': _judulController.text,
           'introduction': _pendahuluanController.text,
           'content': _kontenController.text,
-          if (_selectedImage != null) 'imagePath': _selectedImage!.path,
+          'image': base64Image,
         };
 
-        // Kirim data ke backend menggunakan HTTP POST
         final response = await http.post(
           Uri.parse("http://127.0.0.1:8000/article/create-flutter/"),
           headers: {"Content-Type": "application/json"},
@@ -60,9 +64,10 @@ void _submitForm() async {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Artikel berhasil disimpan!")),
             );
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => ArtikelScreen()),
+              (route) => false,
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(

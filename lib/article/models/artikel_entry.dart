@@ -1,56 +1,43 @@
 import 'dart:convert';
 
-List<Article> articleFromJson(String str) =>
-    List<Article>.from(json.decode(str).map((x) => Article.fromJson(x)));
+List<Article> articleFromJson(String str) {
+  final jsonData = json.decode(str);
 
-String articleToJson(List<Article> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class Article {
-  String model;
-  int pk;
-  Fields fields;
-
-  Article({
-    required this.model,
-    required this.pk,
-    required this.fields,
-  });
-
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
-        model: json["model"],
-        pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "model": model,
-        "pk": pk,
-        "fields": fields.toJson(),
-      };
+  if (jsonData is Map<String, dynamic> && jsonData['articles'] != null) {
+    return List<Article>.from(
+        jsonData['articles'].map((x) => Article.fromJson(x)));
+  }
+  return [];
 }
 
-class Fields {
+String articleToJson(List<Article> data) =>
+    json.encode({"articles": List<dynamic>.from(data.map((x) => x.toJson()))});
+
+class Article {
+  int id;
   String title;
   String image;
   String introduction;
   String content;
 
-  Fields({
+  Article({
+    required this.id,
     required this.title,
     required this.image,
     required this.introduction,
     required this.content,
   });
 
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        title: json["title"],
-        image: json["image"],
-        introduction: json["introduction"],
-        content: json["content"],
+  factory Article.fromJson(Map<String, dynamic> json) => Article(
+        id: json["id"],
+        title: json["title"] ?? '',
+        image: json["image"] ?? '',
+        introduction: json["introduction"] ?? '',
+        content: json["content"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title,
         "image": image,
         "introduction": introduction,

@@ -1,31 +1,62 @@
 import 'package:batikalongan_mobile/article/screens/artikel_detail_screen.dart';
-import 'package:batikalongan_mobile/article/screens/artikel_edit_screen.dart'; // Impor screen ArtikelEditScreen
+import 'package:batikalongan_mobile/article/screens/artikel_edit_screen.dart';
+import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:flutter/material.dart';
-import 'dart:io'; // Untuk File dan Image.file
-import 'package:flutter/foundation.dart'; // Untuk kIsWeb
-import 'package:flutter_svg/flutter_svg.dart'; // Import flutter_svg
+import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ArtikelCardWidget extends StatelessWidget {
+  final int id;
   final String judul;
   final String pendahuluan;
-  final String imagePath;
+  final String image;
 
   const ArtikelCardWidget({
     Key? key,
+    required this.id,
     required this.judul,
     required this.pendahuluan,
-    required this.imagePath,
+    required this.image,
   }) : super(key: key);
+
+  Future<void> _deleteArtikel(BuildContext context) async {
+    final String url = 'http://127.0.0.1:8000/article/delete-flutter/$id';
+
+    try {
+      final response = await http.delete(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Artikel berhasil dihapus')),
+        );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => ArtikelScreen()),
+          (route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menghapus artikel')),
+        );
+      }
+    } catch (e) {
+      print('Error deleting article: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Terjadi kesalahan saat menghapus artikel')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: 16.0), // Padding kiri dan kanan
+          horizontal: 16.0),
       child: Container(
-        width: double.infinity, // Agar card tetap fleksibel
+        width: double.infinity,
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Agar tinggi card mengikuti konten
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Gambar Header
@@ -36,15 +67,10 @@ class ArtikelCardWidget extends StatelessWidget {
                   height: 111,
                   decoration: ShapeDecoration(
                     image: DecorationImage(
-                      image: imagePath.isNotEmpty
-                          ? kIsWeb
-                              ? NetworkImage(imagePath) // Gambar dari URL (Web)
-                              : FileImage(File(imagePath))
-                                  as ImageProvider // Gambar lokal di perangkat
-                          : const AssetImage(
-                              "images/placeholder.jpg"), // Gambar placeholder
+                      image: _getImageProvider(
+                          image),
                       fit: BoxFit
-                          .cover, // Gunakan BoxFit.cover untuk menjaga rasio aspek gambar
+                          .cover,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -62,19 +88,19 @@ class ArtikelCardWidget extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: SvgPicture.asset(
-                          'assets/images/edit.svg', // Path ke file edit.svg
+                          'assets/images/edit.svg',
                         ),
                         onPressed: () {
-                          // Navigasi ke ArtikelEditScreen
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ArtikelEditScreen(
+                                id: id,
                                 initialJudul: judul,
                                 initialPendahuluan: pendahuluan,
                                 initialKonten:
-                                    pendahuluan, // Ganti jika ada konten penuh
-                                initialImagePath: imagePath,
+                                    pendahuluan,
+                                initialImage: image,
                               ),
                             ),
                           );
@@ -82,10 +108,10 @@ class ArtikelCardWidget extends StatelessWidget {
                       ),
                       IconButton(
                         icon: SvgPicture.asset(
-                          'assets/images/delete.svg', // Path ke file delete.svg
+                          'assets/images/delete.svg',
                         ),
                         onPressed: () {
-                          // Aksi untuk delete artikel
+                          _deleteArtikel(context);
                         },
                       ),
                     ],
@@ -93,7 +119,6 @@ class ArtikelCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            // Konten Utama (Judul, Pendahuluan, dan Tombol)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -106,11 +131,11 @@ class ArtikelCardWidget extends StatelessWidget {
               ),
               child: Column(
                 mainAxisSize:
-                    MainAxisSize.min, // Menyesuaikan tinggi dengan konten
+                    MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    judul, // Menampilkan judul artikel
+                    judul,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -121,30 +146,29 @@ class ArtikelCardWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    pendahuluan, // Menampilkan pendahuluan artikel
+                    pendahuluan,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w400,
-                      height: 1.5, // Menambahkan jarak antar baris teks
+                      height: 1.5,
                     ),
-                    maxLines: 3, // Batasi jumlah baris teks
+                    maxLines: 3,
                     overflow: TextOverflow
-                        .ellipsis, // Teks yang terlalu panjang akan diganti dengan "..."
+                        .ellipsis,
                   ),
                   const SizedBox(height: 16),
                   // Tombol Lihat Artikel
                   GestureDetector(
                     onTap: () {
-                      // Navigasi ke ArtikelDetailScreen
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ArtikelDetailScreen(
-                            judul: judul, // Mengirimkan judul artikel
-                            konten: pendahuluan, // Mengirimkan konten artikel
-                            imagePath: imagePath,
+                            judul: judul,
+                            konten: pendahuluan,
+                            image: image,
                           ),
                         ),
                       );
@@ -159,9 +183,9 @@ class ArtikelCardWidget extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize
-                            .max, // Gunakan max untuk memanfaatkan lebar penuh
+                            .max,
                         mainAxisAlignment: MainAxisAlignment
-                            .spaceBetween, // Membuat space antara teks dan ikon
+                            .spaceBetween,
                         children: [
                           Text(
                             'Lihat Artikel',
@@ -173,7 +197,7 @@ class ArtikelCardWidget extends StatelessWidget {
                             ),
                           ),
                           Icon(Icons.arrow_forward,
-                              color: Colors.white, size: 24), // Ikon di kanan
+                              color: Colors.white, size: 24),
                         ],
                       ),
                     ),
@@ -185,5 +209,18 @@ class ArtikelCardWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ImageProvider _getImageProvider(String image) {
+    if (image.isEmpty) {
+      return const AssetImage('images/placeholder.jpg');
+    } else {
+      try {
+        final bytes = base64Decode(image);
+        return MemoryImage(bytes);
+      } catch (e) {
+        return const AssetImage('images/placeholder.jpg');
+      }
+    }
   }
 }

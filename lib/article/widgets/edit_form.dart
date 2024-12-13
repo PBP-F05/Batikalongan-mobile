@@ -1,21 +1,24 @@
+import 'dart:convert';
+
+import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class EditForm extends StatefulWidget {
+  final int id;
   final String initialJudul;
   final String initialPendahuluan;
   final String initialKonten;
-  final String initialImagePath;
-  final void Function(Map<String, String>) onSubmit;
+  final String initialImage;
 
   const EditForm({
     Key? key,
+    required this.id,
     required this.initialJudul,
     required this.initialPendahuluan,
     required this.initialKonten,
-    required this.initialImagePath,
-    required this.onSubmit,
+    required this.initialImage,
   }) : super(key: key);
 
   @override
@@ -32,13 +35,10 @@ class _EditFormState extends State<EditForm> {
   @override
   void initState() {
     super.initState();
-    // Inisialisasi controller dengan data awal yang diterima dari ArtikelEditScreen
     _judulController.text = widget.initialJudul;
     _pendahuluanController.text = widget.initialPendahuluan;
     _kontenController.text = widget.initialKonten;
-    _selectedImage = widget.initialImagePath.isNotEmpty
-        ? XFile(widget.initialImagePath)
-        : null; // Set gambar awal jika ada
+    _selectedImage = null;
   }
 
   void _pickImage() async {
@@ -49,17 +49,56 @@ class _EditFormState extends State<EditForm> {
     });
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Menyiapkan data yang akan dikirim setelah edit
-      final editedData = {
-        'title': _judulController.text,
-        'introduction': _pendahuluanController.text,
-        'content': _kontenController.text,
-        if (_selectedImage != null) 'imagePath': _selectedImage!.path,
-      };
+      try {
+        String base64Image = '';
+        if (_selectedImage != null) {
+          final imageBytes = await _selectedImage!.readAsBytes();
+          base64Image = base64Encode(imageBytes);
+        }
 
-      widget.onSubmit(editedData); // Memanggil onSubmit untuk mengirim data
+        final submittedData = {
+          'id': widget.id,
+          'title': _judulController.text,
+          'introduction': _pendahuluanController.text,
+          'content': _kontenController.text,
+          'image': base64Image,
+        };
+
+        final response = await http.put(
+          Uri.parse("http://127.0.0.1:8000/article/update-flutter/"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(submittedData),
+        );
+
+        if (response.statusCode == 200) {
+          final responseBody = jsonDecode(response.body);
+          if (responseBody['status'] == 'success') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Artikel berhasil diperbarui!")),
+            );
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => ArtikelScreen()),
+              (route) => false,
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text("Terdapat kesalahan, silakan coba lagi.")),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: ${response.reasonPhrase}")),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: $e")),
+        );
+      }
     }
   }
 

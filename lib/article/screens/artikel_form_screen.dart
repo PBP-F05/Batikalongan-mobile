@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import '../widgets/entry_form.dart';
 
 class ArtikelFormScreen extends StatelessWidget {
-  const ArtikelFormScreen({Key? key}) : super(key: key);
+  const ArtikelFormScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
+    context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(title: const Text('Tambah Artikel')),
       body: Padding(
