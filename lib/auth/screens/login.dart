@@ -1,4 +1,7 @@
 import 'package:batikalongan_mobile/auth/screens/menu.dart';
+import 'package:batikalongan_mobile/catalog/screens/product.dart';
+import 'package:batikalongan_mobile/gallery/models/gallery_entry.dart';
+import 'package:batikalongan_mobile/intro/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
