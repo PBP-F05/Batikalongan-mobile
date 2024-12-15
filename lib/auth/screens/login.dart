@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:batikalongan_mobile/auth/screens/register.dart';
-
+import 'package:batikalongan_mobile/screens/main_navigation.dart';
 
 void main() {
   runApp(const LoginApp());
@@ -117,8 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute( // Kalo login berhasil ke page ini
-                                builder: (context) => CatalogScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const MainNavigation()),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
