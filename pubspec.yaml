@@ -67,6 +67,7 @@ flutter:
     - assets/images/placeholder.jpg
     - assets/images/edit.svg
     - assets/images/delete.svg
+    - assets/images/back.svg
   fonts:
     - family: Fabled
       fonts:

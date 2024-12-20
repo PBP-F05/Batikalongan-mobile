@@ -64,26 +64,79 @@ class _ArtikelScreenState extends State<ArtikelScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Artikel Batik'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () async {
-              final newArtikel = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ArtikelFormScreen(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(110),
+        child: Container(
+          width: double.infinity,
+          height: 110,
+          color: Colors.white,
+          padding: const EdgeInsets.only(top: 32, bottom: 16, left: 16, right: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Judul Artikel
+              Expanded(
+                child: Text(
+                  'Artikel Batik',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 36,
+                    fontFamily: 'Fabled',
+                    fontWeight: FontWeight.w400,
+                    height: 1.5,
+                  ),
                 ),
-              );
-              if (newArtikel != null) {
-                setState(() {
-                  artikelList = fetchArtikel(context.read<CookieRequest>());
-                });
-              }
-            },
+              ),
+              // Button Tambah Artikel
+              GestureDetector(
+                onTap: () async {
+                  final newArtikel = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ArtikelFormScreen(),
+                    ),
+                  );
+                  if (newArtikel != null) {
+                    setState(() {
+                      artikelList = fetchArtikel(context.read<CookieRequest>());
+                    });
+                  }
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side:
+                          const BorderSide(width: 2, color: Color(0xFFD88E30)),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      // Icon Tambah (Bisa diganti dengan Icon lain)
+                      const Icon(Icons.add, size: 24, color: Color(0xFFD88E30)),
+                      const SizedBox(width: 8),
+                      // Text Tambah Artikel
+                      const Text(
+                        'Tambah Artikel',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFFD88E30),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       body: FutureBuilder(
         future: artikelList,
@@ -115,6 +168,7 @@ class _ArtikelScreenState extends State<ArtikelScreen>
                     id: artikel.id,
                     judul: artikel.title,
                     pendahuluan: artikel.introduction,
+                    konten: artikel.content,
                     image: artikel.image,
                   ),
                 );
