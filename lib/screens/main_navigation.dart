@@ -1,4 +1,5 @@
 import 'package:batikalongan_mobile/catalog/screens/product.dart';
+import 'package:batikalongan_mobile/timeline/screens/timeline_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:batikalongan_mobile/gallery/screens/gallery_screen.dart';
@@ -20,7 +21,7 @@ class _MainNavigationState extends State<MainNavigation> {
     const GalleryScreen(),
     const GalleryScreen(),
     const ArtikelScreen(),
-    const ArtikelScreen(),
+    const TimeLineScreen(),
   ];
 
   void _onTabTapped(int index) {
