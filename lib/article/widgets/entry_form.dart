@@ -1,8 +1,8 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class ArtikelFormWidget extends StatefulWidget {
   final void Function(Map<String, String>) onSubmit;
@@ -36,7 +36,7 @@ class _ArtikelFormWidgetState extends State<ArtikelFormWidget> {
     });
   }
 
-void _submitForm() async {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
         String base64Image = '';
@@ -88,8 +88,6 @@ void _submitForm() async {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -98,11 +96,27 @@ void _submitForm() async {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Judul Field
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              'Judul Artikel',
+              style: TextStyle(
+                color: Color(0xFFD88E30), // Title color
+                fontFamily: 'Poppins', // Apply Poppins font
+              ),
+            ),
+          ),
           TextFormField(
             controller: _judulController,
-            decoration: const InputDecoration(
-              labelText: 'Judul Artikel',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xFFD88E30)), // Always visible border color
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xFFD88E30)), // Always visible border color
+              ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -110,31 +124,82 @@ void _submitForm() async {
               }
               return null;
             },
+            style: TextStyle(fontFamily: 'Poppins'), // Apply Poppins font
           ),
           const SizedBox(height: 16),
+          // Foto Title
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              'Foto',
+              style: TextStyle(
+                color: Color(0xFFD88E30), // Title color
+                fontFamily: 'Poppins', // Apply Poppins font
+              ),
+            ),
+          ),
           // Image Picker
           Row(
             children: [
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: _pickImage,
-                child: const Text('Pilih Gambar'),
+                icon: Icon(
+                  Icons.upload, // Changed icon
+                  color: Color(0xFFD88E30), // Icon color
+                ),
+                label: Text(
+                  'Upload Foto',
+                  style: TextStyle(
+                    color: Color(0xFFD88E30), // Text color
+                    fontFamily: 'Poppins', // Apply Poppins font
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  textStyle:
+                      TextStyle(fontFamily: 'Poppins'), // Apply Poppins font
+                  side: BorderSide(
+                      color: Color(0xFFD88E30),
+                      width: 1), // Border color and width
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
+                ),
               ),
               const SizedBox(width: 16),
               if (_selectedImage != null)
                 Text(
                   'Gambar Dipilih',
-                  style: TextStyle(color: Colors.green[700]),
+                  style: TextStyle(
+                    color: Colors.green[700],
+                    fontFamily: 'Poppins', // Apply Poppins font
+                  ),
                 ),
             ],
           ),
           const SizedBox(height: 16),
           // Pendahuluan Field
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              'Pendahuluan',
+              style: TextStyle(
+                color: Color(0xFFD88E30), // Title color
+                fontFamily: 'Poppins', // Apply Poppins font
+              ),
+            ),
+          ),
           TextFormField(
             controller: _pendahuluanController,
             maxLines: 4,
-            decoration: const InputDecoration(
-              labelText: 'Pendahuluan',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xFFD88E30)), // Always visible border color
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xFFD88E30)), // Always visible border color
+              ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -142,15 +207,32 @@ void _submitForm() async {
               }
               return null;
             },
+            style: TextStyle(fontFamily: 'Poppins'), // Apply Poppins font
           ),
           const SizedBox(height: 16),
           // Konten Field
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              'Konten',
+              style: TextStyle(
+                color: Color(0xFFD88E30), // Title color
+                fontFamily: 'Poppins', // Apply Poppins font
+              ),
+            ),
+          ),
           TextFormField(
             controller: _kontenController,
             maxLines: 15,
-            decoration: const InputDecoration(
-              labelText: 'Konten',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xFFD88E30)), // Always visible border color
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color(0xFFD88E30)), // Always visible border color
+              ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -158,12 +240,23 @@ void _submitForm() async {
               }
               return null;
             },
+            style: TextStyle(fontFamily: 'Poppins'), // Apply Poppins font
           ),
           const SizedBox(height: 32),
           // Submit Button
           Center(
             child: ElevatedButton(
               onPressed: _submitForm,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFD88E30),
+                foregroundColor: Colors.white,
+                fixedSize: Size(384, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                textStyle:
+                    TextStyle(fontFamily: 'Poppins'), // Apply Poppins font
+              ),
               child: const Text('Submit'),
             ),
           ),

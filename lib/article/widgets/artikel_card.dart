@@ -10,6 +10,7 @@ class ArtikelCardWidget extends StatelessWidget {
   final int id;
   final String judul;
   final String pendahuluan;
+  final String konten;
   final String image;
 
   const ArtikelCardWidget({
@@ -17,6 +18,7 @@ class ArtikelCardWidget extends StatelessWidget {
     required this.id,
     required this.judul,
     required this.pendahuluan,
+    required this.konten,
     required this.image,
   }) : super(key: key);
 
@@ -51,8 +53,7 @@ class ArtikelCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         width: double.infinity,
         child: Column(
@@ -67,10 +68,8 @@ class ArtikelCardWidget extends StatelessWidget {
                   height: 111,
                   decoration: ShapeDecoration(
                     image: DecorationImage(
-                      image: _getImageProvider(
-                          image),
-                      fit: BoxFit
-                          .cover,
+                      image: _getImageProvider(image),
+                      fit: BoxFit.cover,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -98,8 +97,7 @@ class ArtikelCardWidget extends StatelessWidget {
                                 id: id,
                                 initialJudul: judul,
                                 initialPendahuluan: pendahuluan,
-                                initialKonten:
-                                    pendahuluan,
+                                initialKonten: konten,
                                 initialImage: image,
                               ),
                             ),
@@ -130,8 +128,7 @@ class ArtikelCardWidget extends StatelessWidget {
                 border: Border.all(color: Color(0xFFD9D9D9), width: 1),
               ),
               child: Column(
-                mainAxisSize:
-                    MainAxisSize.min,
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -155,8 +152,7 @@ class ArtikelCardWidget extends StatelessWidget {
                       height: 1.5,
                     ),
                     maxLines: 3,
-                    overflow: TextOverflow
-                        .ellipsis,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 16),
                   // Tombol Lihat Artikel
@@ -167,7 +163,7 @@ class ArtikelCardWidget extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => ArtikelDetailScreen(
                             judul: judul,
-                            konten: pendahuluan,
+                            konten: konten,
                             image: image,
                           ),
                         ),
@@ -182,10 +178,8 @@ class ArtikelCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
-                        mainAxisSize: MainAxisSize
-                            .max,
-                        mainAxisAlignment: MainAxisAlignment
-                            .spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Lihat Artikel',
