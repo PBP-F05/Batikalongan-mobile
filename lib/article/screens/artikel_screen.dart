@@ -1,3 +1,6 @@
+import 'package:batikalongan_mobile/gallery/screens/gallery_screen.dart';
+import 'package:batikalongan_mobile/timeline/screens/timeline_screen.dart';
+import 'package:batikalongan_mobile/widgets/bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +18,7 @@ class ArtikelScreen extends StatefulWidget {
 class _ArtikelScreenState extends State<ArtikelScreen>
     with WidgetsBindingObserver {
   late Future<List<Article>> artikelList;
+  int _currentIndex = 3;
 
   @override
   void initState() {
@@ -63,6 +67,14 @@ class _ArtikelScreenState extends State<ArtikelScreen>
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
+    String isAdmin = 'false';
+
+    if (request.cookies['is_admin'] != null) {
+           isAdmin = request.cookies['is_admin']!.value;
+    }
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(110),
@@ -70,7 +82,8 @@ class _ArtikelScreenState extends State<ArtikelScreen>
           width: double.infinity,
           height: 110,
           color: Colors.white,
-          padding: const EdgeInsets.only(top: 32, bottom: 16, left: 16, right: 16),
+          padding:
+              const EdgeInsets.only(top: 32, bottom: 16, left: 16, right: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -87,53 +100,54 @@ class _ArtikelScreenState extends State<ArtikelScreen>
                   ),
                 ),
               ),
-              // Button Tambah Artikel
-              GestureDetector(
-                onTap: () async {
-                  final newArtikel = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ArtikelFormScreen(),
-                    ),
-                  );
-                  if (newArtikel != null) {
-                    setState(() {
-                      artikelList = fetchArtikel(context.read<CookieRequest>());
-                    });
-                  }
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side:
-                          const BorderSide(width: 2, color: Color(0xFFD88E30)),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      // Icon Tambah (Bisa diganti dengan Icon lain)
-                      const Icon(Icons.add, size: 24, color: Color(0xFFD88E30)),
-                      const SizedBox(width: 8),
-                      // Text Tambah Artikel
-                      const Text(
-                        'Tambah Artikel',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFFD88E30),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          height: 1.4,
-                        ),
+
+              if (isAdmin == 'true')
+                GestureDetector(
+                  onTap: () async {
+                    final newArtikel = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ArtikelFormScreen(),
                       ),
-                    ],
+                    );
+                    if (newArtikel != null) {
+                      setState(() {
+                        artikelList =
+                            fetchArtikel(context.read<CookieRequest>());
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 2, color: Color(0xFFD88E30)),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.add,
+                            size: 24, color: Color(0xFFD88E30)),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Tambah Artikel',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFD88E30),
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -173,6 +187,23 @@ class _ArtikelScreenState extends State<ArtikelScreen>
                   ),
                 );
               },
+            );
+          }
+        },
+      ),
+      bottomNavigationBar: BottomNavbar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const GalleryScreen()),
+            );
+          }
+          if (index == 4) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const TimeLineScreen()),
             );
           }
         },

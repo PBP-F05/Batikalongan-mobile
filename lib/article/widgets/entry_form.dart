@@ -223,7 +223,7 @@ class _ArtikelFormWidgetState extends State<ArtikelFormWidget> {
           ),
           TextFormField(
             controller: _kontenController,
-            maxLines: 15,
+            maxLines: 12,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide(

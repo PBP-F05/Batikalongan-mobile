@@ -1,3 +1,4 @@
+import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:batikalongan_mobile/auth/screens/menu.dart';
 import 'package:batikalongan_mobile/gallery/models/gallery_entry.dart';
 import 'package:batikalongan_mobile/intro/screens/splash_screen.dart';
@@ -105,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Untuk menyambungkan Android emulator dengan Django pada localhost,
                       // gunakan URL http://10.0.2.2/
                       final response = await request
-                          .login("https://faiz-assabil-batikalongantest.pbp.cs.ui.ac.id/auth/api/login/", {
+                          .login("http://127.0.0.1:8000/auth/api/login/", {
                         'username': username,
                         'password': password,
                       });
@@ -113,11 +114,18 @@ class _LoginPageState extends State<LoginPage> {
                       if (request.loggedIn) {
                         String message = response['message'];
                         String uname = response['username'];
+                        bool isAdmin = response['is_admin'];
+
+                        request.cookies['is_admin'] =Cookie('is_admin', isAdmin.toString(),1);
+
+                       final isAdminGet =
+                            request.cookies['is_admin']?.value == 'true';
+
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const MainNavigation()),
+                                builder: (context) => const ArtikelScreen()),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ArtikelCardWidget extends StatelessWidget {
   final int id;
@@ -52,6 +54,14 @@ class ArtikelCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
+    String isAdmin = 'false';
+
+    if (request.cookies['is_admin'] != null) {
+      isAdmin = request.cookies['is_admin']!.value;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
@@ -80,41 +90,42 @@ class ArtikelCardWidget extends StatelessWidget {
                   ),
                 ),
                 // Tombol Edit dan Delete
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/images/edit.svg',
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ArtikelEditScreen(
-                                id: id,
-                                initialJudul: judul,
-                                initialPendahuluan: pendahuluan,
-                                initialKonten: konten,
-                                initialImage: image,
+                if (isAdmin == 'true')
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/images/edit.svg',
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArtikelEditScreen(
+                                  id: id,
+                                  initialJudul: judul,
+                                  initialPendahuluan: pendahuluan,
+                                  initialKonten: konten,
+                                  initialImage: image,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/images/delete.svg',
+                            );
+                          },
                         ),
-                        onPressed: () {
-                          _deleteArtikel(context);
-                        },
-                      ),
-                    ],
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/images/delete.svg',
+                          ),
+                          onPressed: () {
+                            _deleteArtikel(context);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
             Container(

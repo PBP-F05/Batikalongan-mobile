@@ -247,7 +247,7 @@ class _EditFormState extends State<EditForm> {
           ),
           TextFormField(
             controller: _kontenController,
-            maxLines: 15,
+            maxLines: 12,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide(
