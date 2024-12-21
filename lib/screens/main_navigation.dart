@@ -1,4 +1,3 @@
-import 'package:batikalongan_mobile/catalog/screens/product.dart';
 import 'package:flutter/material.dart';
 import 'package:batikalongan_mobile/article/screens/artikel_screen.dart';
 import 'package:batikalongan_mobile/gallery/screens/gallery_screen.dart';

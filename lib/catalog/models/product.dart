@@ -1,81 +1,41 @@
-// To parse this JSON data, do
-//
-//     final store = storeFromJson(jsonString);
+class Product {
+  final String id; // UUID
+  final String name;
+  final double price;
+  final String storeId; // Reference to Store
+  final String description;
+  final String image; // URL or file path for the product's image
 
-import 'dart:convert';
+  Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.storeId,
+    required this.description,
+    required this.image,
+  });
 
-List<Store> storeFromJson(String str) => List<Store>.from(json.decode(str).map((x) => Store.fromJson(x)));
-
-String storeToJson(List<Store> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class Store {
-    Model model;
-    String pk;
-    Fields fields;
-
-    Store({
-        required this.model,
-        required this.pk,
-        required this.fields,
-    });
-
-    factory Store.fromJson(Map<String, dynamic> json) => Store(
-        model: modelValues.map[json["model"]]!,
-        pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
+  // Factory method to create Product from JSON
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      price: (json['price'] as num).toDouble(),
+      storeId: json['storeId'] as String,
+      description: json['description'] as String,
+      image: json['image'] as String,
     );
+  }
 
-    Map<String, dynamic> toJson() => {
-        "model": modelValues.reverse[model],
-        "pk": pk,
-        "fields": fields.toJson(),
+  // Convert Product object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'storeId': storeId,
+      'description': description,
+      'image': image,
     };
-}
-
-class Fields {
-    String name;
-    String address;
-    int storeCount;
-    String image;
-
-    Fields({
-        required this.name,
-        required this.address,
-        required this.storeCount,
-        required this.image,
-    });
-
-    factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        name: json["name"],
-        address: json["address"],
-        storeCount: json["store_count"],
-        image: json["image"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "name": name,
-        "address": address,
-        "store_count": storeCount,
-        "image": image,
-    };
-}
-
-enum Model {
-    CATALOG_STORE
-}
-
-final modelValues = EnumValues({
-    "catalog.store": Model.CATALOG_STORE
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-            reverseMap = map.map((k, v) => MapEntry(v, k));
-            return reverseMap;
-    }
+  }
 }
